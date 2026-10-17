@@ -25,7 +25,7 @@
     h1 {
       font-size: 38px;
       margin: 8px 0 24px;
-      text-shadow: 0 2px 4px #0002;
+      text-shadow: 0 2px 4px #0003;
     }
 
     .panel {
@@ -33,14 +33,16 @@
       margin: 20px auto;
       padding: 22px;
       border-radius: 16px;
-      background: white;
-      color: #222;
-      box-shadow: 0 5px 14px #0002;
+      background: #808080;
+      color: white;
+      border: 2px solid white;
+      box-shadow: 0 5px 14px #0003;
     }
 
     .panel h2 {
       margin: 0 0 18px;
       font-size: 24px;
+      color: white;
     }
 
     .settings {
@@ -56,15 +58,22 @@
       gap: 8px;
       font-weight: bold;
       align-items: center;
+      color: white;
     }
 
     select {
       padding: 10px 12px;
-      border: 1px solid #ddd;
+      border: 2px solid white;
       border-radius: 8px;
-      background: white;
+      background: #696969;
+      color: white;
       font-size: 15px;
       cursor: pointer;
+    }
+
+    select option {
+      background: #696969;
+      color: white;
     }
 
     #dice-container {
@@ -84,7 +93,7 @@
       align-items: center;
       justify-content: center;
       padding: 18%;
-      box-shadow: 0 4px 7px #0002;
+      box-shadow: 0 4px 7px #0003;
       transition: background-color 0.25s;
     }
 
@@ -108,6 +117,7 @@
       from {
         transform: translate(-3px, -2px) rotate(-5deg);
       }
+
       to {
         transform: translate(3px, 2px) rotate(5deg);
       }
@@ -115,20 +125,20 @@
 
     #roll-button {
       padding: 13px 32px;
-      border: none;
+      border: 2px solid white;
       border-radius: 10px;
-      background: #8000ff;
+      background: #696969;
       color: white;
       font-size: 19px;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 3px 7px #0002;
+      box-shadow: 0 3px 7px #0003;
       transition: transform 0.15s, background-color 0.15s;
     }
 
     #roll-button:hover:not(:disabled) {
       transform: scale(1.04);
-      background: #6500cc;
+      background: #555;
     }
 
     #roll-button:disabled {
@@ -140,6 +150,7 @@
       margin: 0;
       font-size: 18px;
       line-height: 1.7;
+      color: white;
     }
 
     #history {
@@ -154,8 +165,8 @@
       flex-wrap: wrap;
       gap: 8px;
       padding: 12px;
-      background: #f3f3f3;
-      border: 1px solid #e5e5e5;
+      background: #696969;
+      border: 1px solid white;
       border-radius: 10px;
     }
 
@@ -167,7 +178,7 @@
       align-items: center;
       justify-content: center;
       padding: 8px;
-      box-shadow: 0 2px 4px #0002;
+      box-shadow: 0 2px 4px #0003;
     }
 
     .history-die .pip {
@@ -178,10 +189,11 @@
       margin: 0;
       text-align: left;
       line-height: 1.7;
+      color: white;
     }
 
     .empty-history {
-      color: #666;
+      color: white;
       margin: 0;
     }
 
@@ -271,9 +283,7 @@
 
   <section class="panel">
     <h2>Roll Your Dice!</h2>
-
     <div id="dice-container"></div>
-
     <button id="roll-button">Go Again</button>
   </section>
 
@@ -329,7 +339,6 @@
 
     let history = [];
     let isRolling = false;
-    let rollNumber = 0;
 
     function createDie(color, extraClass = "") {
       const die = document.createElement("div");
@@ -338,8 +347,8 @@
 
       const pip = document.createElement("div");
       pip.className = "pip";
-
       die.appendChild(pip);
+
       return die;
     }
 
@@ -348,9 +357,7 @@
 
       diceContainer.innerHTML = "";
 
-      const count = Number(diceCount.value);
-
-      for (let i = 0; i < count; i++) {
+      for (let i = 0; i < Number(diceCount.value); i++) {
         diceContainer.appendChild(createDie("#ffffff"));
       }
     }
@@ -393,9 +400,7 @@
       rollButton.disabled = true;
       rollButton.textContent = "Rolling...";
 
-      const thisRoll = ++rollNumber;
       const count = Number(diceCount.value);
-
       diceContainer.innerHTML = "";
 
       const dice = [];
@@ -406,20 +411,14 @@
         dice.push(die);
       }
 
-      // Choose the new colors, but reveal them after the animation.
       const result = [];
 
       for (let i = 0; i < count; i++) {
-        const chosen = colors[
-          Math.floor(Math.random() * colors.length)
-        ];
-        result.push(chosen.value);
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        result.push(color.value);
       }
 
-      // Keep the gray dice shaking before showing their colors.
       setTimeout(() => {
-        if (thisRoll !== rollNumber) return;
-
         dice.forEach((die, index) => {
           die.classList.remove("rolling");
           die.style.backgroundColor = result[index];
