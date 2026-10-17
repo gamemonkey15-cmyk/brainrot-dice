@@ -82,7 +82,7 @@
       justify-content: center;
       gap: 15px;
       max-width: 520px;
-      margin: 0 auto 24px;
+      margin: 0 auto 15px;
     }
 
     .die {
@@ -123,12 +123,19 @@
       }
     }
 
+    #dice-id {
+      margin: 4px 0 18px;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+    }
+
     #roll-button {
       padding: 13px 32px;
       border: 2px solid white;
       border-radius: 10px;
-      background: #696969;
-      color: white;
+      background: #ffd92f;
+      color: #222;
       font-size: 19px;
       font-weight: bold;
       cursor: pointer;
@@ -138,7 +145,7 @@
 
     #roll-button:hover:not(:disabled) {
       transform: scale(1.04);
-      background: #555;
+      background: #ffe766;
     }
 
     #roll-button:disabled {
@@ -149,8 +156,38 @@
     #possible-colors {
       margin: 0;
       font-size: 18px;
-      line-height: 1.7;
+      line-height: 1.9;
       color: white;
+    }
+
+    .color-red {
+      color: #ff3030;
+      font-weight: bold;
+    }
+
+    .color-orange {
+      color: #ff941f;
+      font-weight: bold;
+    }
+
+    .color-yellow {
+      color: #fff05a;
+      font-weight: bold;
+    }
+
+    .color-green {
+      color: #28ff55;
+      font-weight: bold;
+    }
+
+    .color-blue {
+      color: #65b5ff;
+      font-weight: bold;
+    }
+
+    .color-purple {
+      color: #d6a0ff;
+      font-weight: bold;
     }
 
     #history {
@@ -283,20 +320,31 @@
 
   <section class="panel">
     <h2>Roll Your Dice!</h2>
+
     <div id="dice-container"></div>
-    <button id="roll-button">Go Again</button>
+
+    <p id="dice-id">ID : v7eReTCg8y</p>
+
+    <button id="roll-button">Go Again!</button>
   </section>
 
   <section class="panel">
     <h2>Possible Colors</h2>
+
     <p id="possible-colors">
       <strong>Possible colors are:</strong>
-      Red, Orange, Yellow, Green, Blue and Purple.
+      <span class="color-red">Red</span>,
+      <span class="color-orange">Orange</span>,
+      <span class="color-yellow">Yellow</span>,
+      <span class="color-green">Green</span>,
+      <span class="color-blue">Blue</span>
+      and <span class="color-purple">Purple</span>.
     </p>
   </section>
 
   <section class="panel">
     <h2>Dice History</h2>
+
     <div id="history">
       <p class="empty-history">Roll the dice to start your history!</p>
     </div>
@@ -304,9 +352,10 @@
 
   <section class="panel">
     <h2>How do these virtual dice work?</h2>
+
     <p class="info-text">
       These virtual dice randomly choose a color each time you click
-      the Go Again button. Each die can land on Red, Orange, Yellow,
+      the Go Again! button. Each die can land on Red, Orange, Yellow,
       Green, Blue or Purple. Choose how many dice to roll and change
       the background color to customize your experience.
     </p>
@@ -314,6 +363,7 @@
 
   <section class="panel">
     <h2>About Us</h2>
+
     <p class="info-text">
       Welcome to Roll Color Dice! This is a fun and simple way to roll
       colored dice for games and challenges. Choose your dice, roll
@@ -347,8 +397,8 @@
 
       const pip = document.createElement("div");
       pip.className = "pip";
-      die.appendChild(pip);
 
+      die.appendChild(pip);
       return die;
     }
 
@@ -430,7 +480,7 @@
 
         isRolling = false;
         rollButton.disabled = false;
-        rollButton.textContent = "Go Again";
+        rollButton.textContent = "Go Again!";
       }, 1100);
     }
 
