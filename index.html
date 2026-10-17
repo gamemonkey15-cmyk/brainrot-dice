@@ -7,147 +7,551 @@
 <title>Roll Color Dice</title>
 
 <style>
-* {
-  box-sizing: border-box;
+* { box-sizing: border-box; }
+
+:root {
+  --panel: rgba(20, 23, 43, .92);
+  --border: rgba(255,255,255,.16);
+  --text: #fff;
+  --muted: #c4c9df;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
   padding: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Arial, sans-serif;
-  color: white;
-  background: linear-gradient(135deg, #101426, #29204b);
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  background: linear-gradient(145deg, #101426, #29204b);
+  transition: background .25s;
+}
+
+body.pink {
+  background: linear-gradient(145deg, #40152f, #f17ab6);
+}
+
+body.blue {
+  background: linear-gradient(145deg, #07172d, #1875c9);
+}
+
+body.black {
+  background: linear-gradient(145deg, #050505, #252525);
 }
 
 main {
-  width: min(100%, 750px);
-  text-align: center;
+  width: min(100%, 1000px);
+  margin: auto;
 }
 
+header { text-align: center; padding: 12px 0; }
+
 h1 {
-  font-size: clamp(2rem, 6vw, 3rem);
-  margin-bottom: 10px;
+  margin: 8px 0;
+  font-size: clamp(2.2rem, 6vw, 3.5rem);
+}
+
+header p, .muted { color: var(--muted); }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 22px;
+  margin: 22px 0;
+  box-shadow: 0 12px 32px #0002;
+}
+
+h2 { margin-top: 0; font-size: 1.4rem; }
+
+.settings {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 26px 0;
+}
+
+.setting label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: .92rem;
+}
+
+select {
+  width: 100%;
+  padding: 12px 10px;
+  border-radius: 10px;
+  border: 1px solid #656b8b;
+  background: #222640;
+  color: white;
+  font: inherit;
 }
 
 .dice {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 18px;
-  margin: 40px 0;
+  gap: 20px;
+  margin: 30px 0;
 }
 
+.die-wrap { min-width: 0; text-align: center; }
+
 .die {
-  aspect-ratio: 1;
   width: 100%;
+  aspect-ratio: 1;
   padding: 18%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  place-items: center;
   border: 3px solid white;
-  border-radius: 20%;
-  box-shadow: 0 7px 0 #0005;
-  transition: background-color 0.2s;
+  border-radius: 21%;
+  box-shadow: 0 7px 0 #0005, inset 0 3px 0 #ffffff45;
+  transition: background-color .2s;
 }
 
 .pip {
-  grid-area: 2 / 2;
+  display: block;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 1;
   border-radius: 50%;
   background: white;
+  box-shadow: 0 1px 2px #0003;
 }
 
-.rolling {
-  animation: shake 0.12s infinite alternate;
+.die-label {
+  margin-top: 12px;
+  font-size: .82rem;
+  color: var(--muted);
+  font-weight: bold;
 }
+
+.rolling { animation: shake .12s infinite alternate; }
 
 @keyframes shake {
-  from { transform: rotate(-8deg) scale(.95); }
-  to { transform: rotate(8deg) scale(1.05); }
+  from { transform: rotate(-8deg) scale(.94); }
+  to { transform: rotate(8deg) scale(1.04); }
 }
 
 button {
-  padding: 16px 30px;
   border: 0;
   border-radius: 12px;
-  background: #a8a0ff;
-  color: #15152c;
-  font-size: 1.1rem;
+  padding: 14px 22px;
+  font: inherit;
   font-weight: bold;
   cursor: pointer;
+  color: #17152c;
+  background: #b7adff;
 }
 
-button:hover {
-  filter: brightness(1.1);
+button:hover { filter: brightness(1.1); }
+button:disabled { opacity: .65; cursor: wait; }
+
+.actions { text-align: center; margin: 25px 0; }
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-button:disabled {
-  opacity: 0.7;
-  cursor: wait;
+.color-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #ffffff08;
 }
 
-@media (max-width: 520px) {
-  body { padding: 16px; }
-  .dice { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #ffffff65;
+}
+
+.color-name { font-weight: bold; }
+.red-text { color: #ff555f; }
+.orange-text { color: #ff9a45; }
+.yellow-text { color: #ffdf57; }
+.green-text { color: #45df88; }
+.blue-text { color: #63a7ff; }
+.purple-text { color: #c29aff; }
+
+.history-list {
+  display: grid;
+  gap: 10px;
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.history-entry {
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #ffffff08;
+}
+
+.history-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: .88rem;
+  color: var(--muted);
+}
+
+.history-dice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.history-die {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 9px;
+  border-radius: 8px;
+  color: white;
+  font-size: .85rem;
+  font-weight: bold;
+  background: #ffffff12;
+}
+
+.mini-swatch {
+  width: 13px;
+  height: 13px;
+  border-radius: 4px;
+  border: 1px solid #ffffff80;
+}
+
+.empty { color: var(--muted); }
+
+.info-box {
+  line-height: 1.75;
+  color: #e1e4f5;
+}
+
+.info-box p { margin-bottom: 0; }
+.info-box strong { color: white; }
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: .85rem;
+  padding: 10px 0 28px;
+}
+
+@media (max-width: 600px) {
+  body { padding: 12px; }
+  .settings { grid-template-columns: 1fr; gap: 16px; }
+  .dice { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+  .die { max-width: 155px; margin: auto; }
+  .panel { padding: 16px; }
 }
 </style>
 </head>
 
 <body>
 <main>
-  <h1>🎲 Roll Color Dice</h1>
+  <header>
+    <h1>🎲 Roll Color Dice</h1>
+    <p>Roll the dice and see which colors you get!</p>
+  </header>
 
-  <div class="dice" id="dice">
-    <div class="die"><span class="pip"></span></div>
-    <div class="die"><span class="pip"></span></div>
-    <div class="die"><span class="pip"></span></div>
-    <div class="die"><span class="pip"></span></div>
-  </div>
+  <section class="panel">
+    <div class="settings">
+      <div class="setting">
+        <label for="diceCount">Number of Dice</label>
+        <select id="diceCount">
+          <!-- Options 1 through 20 are created below -->
+        </select>
+      </div>
 
-  <button id="roll">🎲 Roll Colors</button>
+      <div class="setting">
+        <label for="diceType">Dice Type</label>
+        <select id="diceType">
+          <option value="colored">Colored Dice</option>
+        </select>
+      </div>
+
+      <div class="setting">
+        <label for="background">Background</label>
+        <select id="background">
+          <option value="default">Purple</option>
+          <option value="pink">Pink</option>
+          <option value="blue">Blue</option>
+          <option value="black">Black</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="dice" id="dice"></div>
+
+    <div class="actions">
+      <button id="roll">🎲 Go Again</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Possible Colors</h2>
+    <p class="muted">Possible colors are:</p>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Dice History</h2>
+    <p class="muted">Your 20 most recent rolls appear here.</p>
+    <div class="history-list" id="history">
+      <p class="empty">Roll the dice to start your history!</p>
+    </div>
+  </section>
+
+  <section class="panel info-box">
+    <h2>How do these virtual dice work?</h2>
+    <p>
+      This website uses a random number generator to assign a color
+      to each virtual die. Every color has an equal chance of being
+      selected. All dice always display the number 1.
+    </p>
+    <p>
+      By clicking on the "Go Again" button you can re-roll all the
+      dice on this page.
+    </p>
+    <p>
+      This page allows you to choose any number of dice between
+      1 and 20. Each die has six possible colors:
+      Red, Orange, Yellow, Green, Blue and Purple.
+    </p>
+  </section>
+
+  <section class="panel info-box">
+    <h2>About us</h2>
+    <p>
+      Roll Color Dice is a free online color dice simulator.
+      You can use it for games, challenges, and deciding between
+      different options. Choose how many dice to roll, select a
+      background theme, and roll again whenever you want.
+    </p>
+    <p>
+      This is an independent fan-made project and is not affiliated
+      with or endorsed by Steal a Brainrot or Online-Dice.com.
+    </p>
+  </section>
+
+  <footer>Roll Color Dice · Free virtual colored dice</footer>
 </main>
 
 <script>
 const colors = [
-  "#f04452", // Red
-  "#ff8a32", // Orange
-  "#ffd447", // Yellow
-  "#24b96b", // Green
-  "#3988ff", // Blue
-  "#9b61f4"  // Purple
+  { name: "Red", hex: "#f04452", text: "red-text" },
+  { name: "Orange", hex: "#ff8a32", text: "orange-text" },
+  { name: "Yellow", hex: "#ffd447", text: "yellow-text" },
+  { name: "Green", hex: "#24b96b", text: "green-text" },
+  { name: "Blue", hex: "#3988ff", text: "blue-text" },
+  { name: "Purple", hex: "#9b61f4", text: "purple-text" }
 ];
 
-const dice = document.querySelectorAll(".die");
-const button = document.querySelector("#roll");
+const diceContainer = document.querySelector("#dice");
+const countSelect = document.querySelector("#diceCount");
+const backgroundSelect = document.querySelector("#background");
+const rollButton = document.querySelector("#roll");
+const historyContainer = document.querySelector("#history");
+const legend = document.querySelector("#legend");
+
+let history = [];
+let rolling = false;
+let rollNumber = 0;
+let currentDice = [];
+
+for (let i = 1; i <= 20; i++) {
+  const option = document.createElement("option");
+  option.value = i;
+  option.textContent = i;
+  if (i === 4) option.selected = true;
+  countSelect.appendChild(option);
+}
+
+function randomColorIndex() {
+  // Uniformly choose one of the six colors.
+  const values = new Uint32Array(1);
+  const limit = Math.floor(4294967296 / 6) * 6;
+
+  do {
+    crypto.getRandomValues(values);
+  } while (values[0] >= limit);
+
+  return values[0] % 6;
+}
+
+function buildLegend() {
+  legend.innerHTML = "";
+
+  colors.forEach(color => {
+    const item = document.createElement("div");
+    item.className = "color-item";
+
+    const swatch = document.createElement("span");
+    swatch.className = "swatch";
+    swatch.style.background = color.hex;
+
+    const name = document.createElement("span");
+    name.className = "color-name " + color.text;
+    name.textContent = color.name;
+
+    item.append(swatch, name);
+    legend.appendChild(item);
+  });
+}
+
+function drawDie(index, colorIndex) {
+  const face = document.querySelector("#die-" + index);
+  const color = colors[colorIndex];
+
+  face.style.backgroundColor = color.hex;
+  face.setAttribute("aria-label", color.name + " die showing 1");
+}
+
+function buildDice() {
+  const count = Number(countSelect.value);
+
+  diceContainer.innerHTML = "";
+  currentDice = [];
+
+  for (let i = 0; i < count; i++) {
+    const wrap = document.createElement("div");
+    wrap.className = "die-wrap";
+
+    const face = document.createElement("div");
+    face.className = "die";
+    face.id = "die-" + i;
+
+    const pip = document.createElement("span");
+    pip.className = "pip";
+    face.appendChild(pip);
+
+    const label = document.createElement("div");
+    label.className = "die-label";
+    label.textContent = "DIE " + (i + 1);
+
+    wrap.append(face, label);
+    diceContainer.appendChild(wrap);
+    currentDice.push(null);
+  }
+}
+
+function renderHistory() {
+  historyContainer.innerHTML = "";
+
+  if (history.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "empty";
+    empty.textContent = "Roll the dice to start your history!";
+    historyContainer.appendChild(empty);
+    return;
+  }
+
+  history.forEach(entry => {
+    const card = document.createElement("article");
+    card.className = "history-entry";
+
+    const top = document.createElement("div");
+    top.className = "history-top";
+
+    const title = document.createElement("strong");
+    title.textContent = "Roll #" + entry.number;
+
+    const time = document.createElement("span");
+    time.textContent = entry.time;
+
+    top.append(title, time);
+
+    const diceRow = document.createElement("div");
+    diceRow.className = "history-dice";
+
+    entry.colors.forEach((colorIndex, i) => {
+      const color = colors[colorIndex];
+
+      const chip = document.createElement("span");
+      chip.className = "history-die";
+
+      const swatch = document.createElement("span");
+      swatch.className = "mini-swatch";
+      swatch.style.backgroundColor = color.hex;
+
+      const label = document.createElement("span");
+      label.textContent = "Die " + (i + 1) + ": " + color.name + " (1)";
+
+      chip.append(swatch, label);
+      diceRow.appendChild(chip);
+    });
+
+    card.append(top, diceRow);
+    historyContainer.appendChild(card);
+  });
+}
 
 function rollDice() {
-  button.disabled = true;
+  if (rolling) return;
 
-  dice.forEach(die => {
+  rolling = true;
+  rollButton.disabled = true;
+
+  document.querySelectorAll(".die").forEach(die => {
     die.classList.add("rolling");
   });
 
   setTimeout(() => {
-    dice.forEach(die => {
-      const randomIndex = Math.floor(Math.random() * colors.length);
-      die.style.backgroundColor = colors[randomIndex];
+    const chosenColors = currentDice.map(() => randomColorIndex());
+
+    chosenColors.forEach((colorIndex, i) => {
+      drawDie(i, colorIndex);
     });
 
-    dice.forEach(die => {
+    document.querySelectorAll(".die").forEach(die => {
       die.classList.remove("rolling");
     });
 
-    button.disabled = false;
+    rollNumber++;
+
+    const now = new Date();
+    history.unshift({
+      number: rollNumber,
+      time: now.toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit"
+      }),
+      colors: chosenColors
+    });
+
+    // Keep only the last 20 rolls.
+    history = history.slice(0, 20);
+    renderHistory();
+
+    rolling = false;
+    rollButton.disabled = false;
   }, 450);
 }
 
-button.addEventListener("click", rollDice);
+countSelect.addEventListener("change", () => {
+  buildDice();
+  rollDice();
+});
 
-// Start with four dice showing 1, each in a random color.
+backgroundSelect.addEventListener("change", () => {
+  document.body.classList.remove("pink", "blue", "black");
+
+  if (backgroundSelect.value !== "default") {
+    document.body.classList.add(backgroundSelect.value);
+  }
+});
+
+rollButton.addEventListener("click", rollDice);
+
+buildLegend();
+buildDice();
 rollDice();
 </script>
 </body>
