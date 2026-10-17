@@ -14,34 +14,37 @@
     body {
       margin: 0;
       padding: 25px 15px 40px;
-      font-family: Arial, sans-serif;
+      font-family: "Trebuchet MS", Arial, sans-serif;
       text-align: center;
-      background: #8000ff;
+      background: #69a8ff;
       color: white;
       min-height: 100vh;
       transition: background-color 0.25s;
     }
 
     h1 {
-      font-size: 38px;
+      font-size: 36px;
+      font-weight: 900;
       margin: 8px 0 24px;
-      text-shadow: 0 2px 4px #0003;
+      text-transform: uppercase;
+      text-shadow: 2px 3px 0 #4387ff;
     }
 
     .panel {
       max-width: 850px;
       margin: 20px auto;
       padding: 22px;
-      border-radius: 16px;
-      background: #808080;
+      border-radius: 22px;
+      background: rgba(65, 139, 255, 0.55);
       color: white;
-      border: 2px solid white;
-      box-shadow: 0 5px 14px #0003;
+      border: 4px solid #a8ceff;
+      box-shadow: 0 5px 14px #0002;
     }
 
     .panel h2 {
       margin: 0 0 18px;
-      font-size: 24px;
+      font-size: 25px;
+      font-weight: 900;
       color: white;
     }
 
@@ -49,52 +52,67 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 20px;
+      align-items: center;
+      gap: 10px;
     }
 
     .setting {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       font-weight: bold;
       align-items: center;
       color: white;
     }
 
+    .setting-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
     select {
-      padding: 10px 12px;
-      border: 2px solid white;
-      border-radius: 8px;
-      background: #696969;
-      color: white;
-      font-size: 15px;
+      width: 127px;
+      height: 49px;
+      padding: 8px 10px;
+      border: 3px solid #4387ff;
+      border-radius: 5px;
+      background: white;
+      color: #4387ff;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 900;
       cursor: pointer;
     }
 
     select option {
-      background: #696969;
-      color: white;
+      background: white;
+      color: #4387ff;
+      font-weight: bold;
     }
 
     #dice-container {
       display: grid;
-      grid-template-columns: repeat(4, minmax(55px, 90px));
+      grid-template-columns: repeat(4, minmax(55px, 94px));
       justify-content: center;
-      gap: 15px;
-      max-width: 520px;
-      margin: 0 auto 15px;
+      gap: 10px;
+      max-width: 430px;
+      margin: 0 auto 18px;
     }
 
     .die {
       width: 100%;
       aspect-ratio: 1;
-      border: 2px solid white;
+      border: 9px solid white;
       border-radius: 18%;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 18%;
-      box-shadow: 0 4px 7px #0003;
+      box-shadow: none;
       transition: background-color 0.25s;
     }
 
@@ -103,6 +121,7 @@
       aspect-ratio: 1;
       background: white;
       border-radius: 50%;
+      flex-shrink: 0;
     }
 
     .rolling {
@@ -118,7 +137,6 @@
       from {
         transform: translate(-3px, -2px) rotate(-5deg);
       }
-
       to {
         transform: translate(3px, 2px) rotate(5deg);
       }
@@ -126,14 +144,15 @@
 
     #dice-id {
       margin: 4px 0 18px;
-      font-size: 16px;
+      font-size: 19px;
       font-weight: bold;
       color: white;
+      overflow-wrap: anywhere;
     }
 
     #roll-button {
       padding: 13px 32px;
-      border: 2px solid white;
+      border: 3px solid white;
       border-radius: 10px;
       background: #ffd92f;
       color: #222;
@@ -182,12 +201,12 @@
     }
 
     .color-blue {
-      color: #65b5ff;
+      color: #b5dcff;
       font-weight: bold;
     }
 
     .color-purple {
-      color: #d6a0ff;
+      color: #e4c0ff;
       font-weight: bold;
     }
 
@@ -203,25 +222,24 @@
       flex-wrap: wrap;
       gap: 8px;
       padding: 12px;
-      background: #696969;
-      border: 1px solid white;
+      background: rgba(65, 139, 255, 0.35);
+      border: 2px solid white;
       border-radius: 10px;
     }
 
     .history-die {
       width: 44px;
       aspect-ratio: 1;
-      border: 2px solid white;
+      border: 4px solid white;
       border-radius: 18%;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 8px;
-      box-shadow: 0 2px 4px #0003;
     }
 
     .history-die .pip {
-      width: 25%;
+      width: 40%;
       background: white;
     }
 
@@ -243,12 +261,16 @@
       }
 
       h1 {
-        font-size: 31px;
+        font-size: 29px;
       }
 
       .panel {
-        padding: 17px 12px;
+        padding: 17px 10px;
         margin: 15px auto;
+      }
+
+      .panel h2 {
+        font-size: 22px;
       }
 
       #dice-container {
@@ -257,7 +279,13 @@
       }
 
       .settings {
-        gap: 15px;
+        gap: 8px;
+      }
+
+      select {
+        width: 105px;
+        font-size: 13px;
+        padding: 7px 4px;
       }
     }
 
@@ -277,45 +305,46 @@
 
     <div class="settings">
       <label class="setting">
-        Number of Dice
-        <select id="dice-count">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4" selected>4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
-          <option value="13">13</option>
-          <option value="14">14</option>
-          <option value="15">15</option>
-          <option value="16">16</option>
-          <option value="17">17</option>
-          <option value="18">18</option>
-          <option value="19">19</option>
-          <option value="20">20</option>
+        <span class="setting-label">Number of Dice</span>
+        <select id="dice-count" aria-label="Number of Dice">
+          <option value="1">1 DICE</option>
+          <option value="2">2 DICE</option>
+          <option value="3">3 DICE</option>
+          <option value="4" selected>4 DICE</option>
+          <option value="5">5 DICE</option>
+          <option value="6">6 DICE</option>
+          <option value="7">7 DICE</option>
+          <option value="8">8 DICE</option>
+          <option value="9">9 DICE</option>
+          <option value="10">10 DICE</option>
+          <option value="11">11 DICE</option>
+          <option value="12">12 DICE</option>
+          <option value="13">13 DICE</option>
+          <option value="14">14 DICE</option>
+          <option value="15">15 DICE</option>
+          <option value="16">16 DICE</option>
+          <option value="17">17 DICE</option>
+          <option value="18">18 DICE</option>
+          <option value="19">19 DICE</option>
+          <option value="20">20 DICE</option>
         </select>
       </label>
 
       <label class="setting">
-        Dice Type
-        <select id="dice-type">
-          <option value="colored">Colored Dice</option>
+        <span class="setting-label">Dice Type</span>
+        <select id="dice-type" aria-label="Dice Type">
+          <option value="colored">COLOR DICE</option>
         </select>
       </label>
 
       <label class="setting">
-        Background
-        <select id="background">
-          <option value="#8000ff">Purple</option>
-          <option value="#ff69b4">Pink</option>
-          <option value="#168cff">Blue</option>
-          <option value="#171717">Black</option>
+        <span class="setting-label">Background Color</span>
+        <select id="background" aria-label="Background Color">
+          <option value="#69a8ff" selected>SELECT 1</option>
+          <option value="#8000ff">PURPLE</option>
+          <option value="#ff69b4">PINK</option>
+          <option value="#168cff">BLUE</option>
+          <option value="#171717">BLACK</option>
         </select>
       </label>
     </div>
@@ -326,7 +355,7 @@
 
     <div id="dice-container"></div>
 
-    <p id="dice-id">ID : v7eReTCg8y</p>
+    <p id="dice-id">ID: ZT9U29APVb</p>
 
     <button id="roll-button">Go Again!</button>
   </section>
@@ -349,7 +378,9 @@
     <h2>Dice History</h2>
 
     <div id="history">
-      <p class="empty-history">Roll the dice to start your history!</p>
+      <p class="empty-history">
+        Roll the dice to start your history!
+      </p>
     </div>
   </section>
 
@@ -411,7 +442,7 @@
       diceContainer.innerHTML = "";
 
       for (let i = 0; i < Number(diceCount.value); i++) {
-        diceContainer.appendChild(createDie("#ffffff"));
+        diceContainer.appendChild(createDie("#a855f7"));
       }
     }
 
@@ -467,7 +498,9 @@
       const result = [];
 
       for (let i = 0; i < count; i++) {
-        const color = colors[Math.floor(Math.random() * colors.length)];
+        const color = colors[
+          Math.floor(Math.random() * colors.length)
+        ];
         result.push(color.value);
       }
 
@@ -500,3 +533,4 @@
   </script>
 </body>
 </html>
+
