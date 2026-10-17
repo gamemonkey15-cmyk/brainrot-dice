@@ -16,7 +16,12 @@
       padding: 25px 15px 40px;
       font-family: "Trebuchet MS", Arial, sans-serif;
       text-align: center;
-      background: #69a8ff;
+      background-color: #69a8ff;
+      background-image:
+        radial-gradient(ellipse at 18% 20%, transparent 0 12px, rgba(25, 91, 170, .22) 13px 14px, transparent 15px),
+        radial-gradient(ellipse at 78% 65%, transparent 0 10px, rgba(25, 91, 170, .18) 11px 12px, transparent 13px),
+        linear-gradient(135deg, transparent 48%, rgba(255,255,255,.09) 49% 51%, transparent 52%);
+      background-size: 135px 115px, 175px 155px, 90px 90px;
       color: white;
       min-height: 100vh;
       transition: background-color 0.25s;
@@ -35,9 +40,9 @@
       margin: 20px auto;
       padding: 22px;
       border-radius: 22px;
-      background: rgba(65, 139, 255, 0.55);
+      background: rgba(77, 151, 255, 0.46);
       color: white;
-      border: 4px solid #a8ceff;
+      border: 4px solid rgba(190, 220, 255, 0.9);
       box-shadow: 0 5px 14px #0002;
     }
 
@@ -117,7 +122,7 @@
     }
 
     .pip {
-      width: 25%;
+      width: 34%;
       aspect-ratio: 1;
       background: white;
       border-radius: 50%;
@@ -151,26 +156,93 @@
     }
 
     #roll-button {
-      padding: 13px 32px;
+      display: block;
+      width: 100%;
+      max-width: 430px;
+      margin: 14px auto 0;
+      padding: 10px 16px;
       border: 3px solid white;
-      border-radius: 10px;
-      background: #ffd92f;
-      color: #222;
-      font-size: 19px;
-      font-weight: bold;
+      border-radius: 4px;
+      background: #ffdf24;
+      color: white;
+      font-family: inherit;
+      font-size: 25px;
+      line-height: 1.25;
+      font-weight: 900;
+      text-transform: uppercase;
       cursor: pointer;
-      box-shadow: 0 3px 7px #0003;
+      text-shadow: 1px 2px 0 #b88724;
+      box-shadow: 0 2px 4px #0002;
       transition: transform 0.15s, background-color 0.15s;
     }
 
     #roll-button:hover:not(:disabled) {
       transform: scale(1.04);
-      background: #ffe766;
+      background: #ffe95b;
     }
 
     #roll-button:disabled {
       opacity: 0.7;
       cursor: wait;
+    }
+
+    .counter {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      align-items: center;
+      gap: 0;
+      width: 100%;
+      max-width: 430px;
+      margin: 14px auto 0;
+      padding: 4px;
+      border-radius: 5px;
+      background: rgba(160, 199, 255, 0.48);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: white;
+    }
+
+    .counter-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .counter button {
+      border: 0;
+      background: transparent;
+      color: white;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 900;
+      line-height: 1.2;
+      padding: 1px 3px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    .counter button:hover {
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    #counter-value {
+      grid-column: 2 / 5;
+      grid-row: 1;
+      font-size: 34px;
+      line-height: 1.2;
+      font-weight: 900;
+      color: white;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .counter-left {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .counter-right {
+      grid-column: 5;
+      grid-row: 1;
     }
 
     #possible-colors {
@@ -222,8 +294,8 @@
       flex-wrap: wrap;
       gap: 8px;
       padding: 12px;
-      background: rgba(65, 139, 255, 0.35);
-      border: 2px solid white;
+      background: rgba(77, 151, 255, 0.30);
+      border: 2px solid rgba(255, 255, 255, 0.9);
       border-radius: 10px;
     }
 
@@ -276,6 +348,11 @@
       #dice-container {
         grid-template-columns: repeat(2, minmax(65px, 90px));
         gap: 13px;
+      }
+
+      #roll-button,
+      .counter {
+        max-width: 100%;
       }
 
       .settings {
@@ -340,7 +417,7 @@
       <label class="setting">
         <span class="setting-label">Background Color</span>
         <select id="background" aria-label="Background Color">
-          <option value="#69a8ff" selected>SELECT 1</option>
+          <option value="#69a8ff" selected>BLUE</option>
           <option value="#8000ff">PURPLE</option>
           <option value="#ff69b4">PINK</option>
           <option value="#168cff">BLUE</option>
@@ -358,6 +435,20 @@
     <p id="dice-id">ID: ZT9U29APVb</p>
 
     <button id="roll-button">Go Again!</button>
+
+    <div class="counter" aria-label="Score counter">
+      <div class="counter-buttons counter-left">
+        <button type="button" data-counter-change="-1" aria-label="Subtract 1">-1</button>
+        <button type="button" data-counter-change="-10" aria-label="Subtract 10">-10</button>
+      </div>
+
+      <div id="counter-value" aria-live="polite">0</div>
+
+      <div class="counter-buttons counter-right">
+        <button type="button" data-counter-change="1" aria-label="Add 1">+1</button>
+        <button type="button" data-counter-change="10" aria-label="Add 10">+10</button>
+      </div>
+    </div>
   </section>
 
   <section class="panel">
@@ -528,9 +619,18 @@
 
     rollButton.addEventListener("click", rollDice);
 
+    let counterValue = 0;
+    const counterDisplay = document.getElementById("counter-value");
+
+    document.querySelectorAll("[data-counter-change]").forEach(button => {
+      button.addEventListener("click", () => {
+        counterValue += Number(button.dataset.counterChange);
+        counterDisplay.textContent = counterValue;
+      });
+    });
+
     displayDice();
     displayHistory();
   </script>
 </body>
 </html>
-
