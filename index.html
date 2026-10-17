@@ -4,16 +4,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Brainrot Dice Roller</title>
+<title>Roll Color Dice</title>
+
 <style>
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
   min-height: 100vh;
   padding: 24px;
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-family: Arial, sans-serif;
   color: white;
   background: linear-gradient(135deg, #101426, #29204b);
@@ -24,65 +28,37 @@ main {
   text-align: center;
 }
 
-h1 { font-size: 2.5rem; margin-bottom: 8px; }
-p { color: #c6c9e8; }
+h1 {
+  font-size: clamp(2rem, 6vw, 3rem);
+  margin-bottom: 10px;
+}
 
 .dice {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-  margin: 32px 0;
+  gap: 18px;
+  margin: 40px 0;
 }
 
-.die-box { min-width: 0; }
-
 .die {
-  width: 100%;
   aspect-ratio: 1;
-  padding: 12%;
+  width: 100%;
+  padding: 18%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 4%;
   border: 3px solid white;
   border-radius: 20%;
   box-shadow: 0 7px 0 #0005;
+  transition: background-color 0.2s;
 }
 
 .pip {
+  grid-area: 2 / 2;
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  align-self: center;
-}
-
-select, button {
-  padding: 11px;
-  margin-top: 12px;
-  border: 0;
-  border-radius: 10px;
-  font-size: 1rem;
-}
-
-select {
-  width: 100%;
-  color: white;
-  background: #282b48;
-  border: 1px solid #65698b;
-}
-
-button {
-  background: #a8a0ff;
-  color: #15152c;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-button:hover { filter: brightness(1.12); }
-
-#roll {
-  font-size: 1.15rem;
-  padding: 15px 26px;
+  background: white;
 }
 
 .rolling {
@@ -90,190 +66,89 @@ button:hover { filter: brightness(1.12); }
 }
 
 @keyframes shake {
-  from { transform: rotate(-9deg) scale(.94); }
-  to { transform: rotate(9deg) scale(1.04); }
+  from { transform: rotate(-8deg) scale(.95); }
+  to { transform: rotate(8deg) scale(1.05); }
 }
 
-#total {
-  font-size: 1.4rem;
+button {
+  padding: 16px 30px;
+  border: 0;
+  border-radius: 12px;
+  background: #a8a0ff;
+  color: #15152c;
+  font-size: 1.1rem;
   font-weight: bold;
-  margin: 24px;
+  cursor: pointer;
 }
 
-#results {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
+button:hover {
+  filter: brightness(1.1);
 }
 
-.chip {
-  padding: 8px 12px;
-  border-radius: 20px;
-  background: #ffffff18;
+button:disabled {
+  opacity: 0.7;
+  cursor: wait;
 }
 
 @media (max-width: 520px) {
-  body { padding: 14px; }
+  body { padding: 16px; }
   .dice { grid-template-columns: repeat(2, 1fr); gap: 24px; }
-  .die { max-width: 140px; margin: auto; }
-  select { max-width: 160px; }
 }
 </style>
 </head>
+
 <body>
 <main>
-  <h1>🎲 Brainrot Dice</h1>
-  <p>Choose your colors and roll all four dice!</p>
+  <h1>🎲 Roll Color Dice</h1>
 
-  <div class="dice" id="dice"></div>
+  <div class="dice" id="dice">
+    <div class="die"><span class="pip"></span></div>
+    <div class="die"><span class="pip"></span></div>
+    <div class="die"><span class="pip"></span></div>
+    <div class="die"><span class="pip"></span></div>
+  </div>
 
-  <button id="roll">🎲 ROLL ALL 4 DICE</button>
-  <div id="total">Total: —</div>
-  <div id="results"></div>
-  <br>
-  <button id="reset">Reset</button>
+  <button id="roll">🎲 Roll Colors</button>
 </main>
 
 <script>
 const colors = [
-  { name: "Red", hex: "#f04452", pip: "white" },
-  { name: "Blue", hex: "#3988ff", pip: "white" },
-  { name: "Green", hex: "#24b96b", pip: "white" },
-  { name: "Yellow", hex: "#ffd447", pip: "#222" },
-  { name: "Purple", hex: "#9b61f4", pip: "white" },
-  { name: "Orange", hex: "#ff8a32", pip: "#222" }
+  "#f04452", // Red
+  "#ff8a32", // Orange
+  "#ffd447", // Yellow
+  "#24b96b", // Green
+  "#3988ff", // Blue
+  "#9b61f4"  // Purple
 ];
 
-const patterns = {
-  1: [4],
-  2: [0, 8],
-  3: [0, 4, 8],
-  4: [0, 2, 6, 8],
-  5: [0, 2, 4, 6, 8],
-  6: [0, 2, 3, 5, 6, 8]
-};
-
-const diceElement = document.querySelector("#dice");
-const resultsElement = document.querySelector("#results");
-const totalElement = document.querySelector("#total");
-const rollButton = document.querySelector("#roll");
-
-const dice = Array.from({ length: 4 }, (_, i) => ({
-  color: i,
-  value: 1
-}));
-
-function drawDie(index) {
-  const die = dice[index];
-  const face = document.querySelector(`#face-${index}`);
-  const color = colors[die.color];
-
-  face.style.background = color.hex;
-  face.innerHTML = "";
-
-  for (let i = 0; i < 9; i++) {
-    const pip = document.createElement("span");
-
-    if (patterns[die.value].includes(i)) {
-      pip.className = "pip";
-      pip.style.background = color.pip;
-    }
-
-    face.appendChild(pip);
-  }
-
-  face.setAttribute(
-    "aria-label",
-    `${color.name} die showing ${die.value}`
-  );
-}
-
-function buildDice() {
-  diceElement.innerHTML = "";
-
-  dice.forEach((die, index) => {
-    const box = document.createElement("div");
-    box.className = "die-box";
-
-    const face = document.createElement("div");
-    face.className = "die";
-    face.id = `face-${index}`;
-
-    const label = document.createElement("div");
-    label.textContent = `DIE ${index + 1}`;
-
-    const select = document.createElement("select");
-    select.setAttribute("aria-label", `Color for die ${index + 1}`);
-
-    colors.forEach((color, colorIndex) => {
-      const option = document.createElement("option");
-      option.value = colorIndex;
-      option.textContent = color.name;
-      select.appendChild(option);
-    });
-
-    select.value = die.color;
-
-    select.addEventListener("change", () => {
-      die.color = Number(select.value);
-      drawDie(index);
-    });
-
-    box.append(face, label, select);
-    diceElement.appendChild(box);
-    drawDie(index);
-  });
-}
+const dice = document.querySelectorAll(".die");
+const button = document.querySelector("#roll");
 
 function rollDice() {
-  if (rollButton.disabled) return;
+  button.disabled = true;
 
-  rollButton.disabled = true;
-  resultsElement.innerHTML = "";
-  totalElement.textContent = "Rolling...";
-
-  document.querySelectorAll(".die").forEach(face => {
-    face.classList.add("rolling");
+  dice.forEach(die => {
+    die.classList.add("rolling");
   });
 
   setTimeout(() => {
-    let total = 0;
-
-    dice.forEach((die, index) => {
-      die.value = Math.floor(Math.random() * 6) + 1;
-      total += die.value;
-
-      const face = document.querySelector(`#face-${index}`);
-      face.classList.remove("rolling");
-      drawDie(index);
-
-      const chip = document.createElement("span");
-      chip.className = "chip";
-      chip.textContent = `${colors[die.color].name}: ${die.value}`;
-      resultsElement.appendChild(chip);
+    dice.forEach(die => {
+      const randomIndex = Math.floor(Math.random() * colors.length);
+      die.style.backgroundColor = colors[randomIndex];
     });
 
-    totalElement.textContent = `Total: ${total} / 24`;
-    rollButton.disabled = false;
-  }, 500);
+    dice.forEach(die => {
+      die.classList.remove("rolling");
+    });
+
+    button.disabled = false;
+  }, 450);
 }
 
-function resetDice() {
-  dice.forEach((die, index) => {
-    die.value = 1;
-    die.color = index;
-  });
+button.addEventListener("click", rollDice);
 
-  totalElement.textContent = "Total: —";
-  resultsElement.innerHTML = "";
-  buildDice();
-}
-
-rollButton.addEventListener("click", rollDice);
-document.querySelector("#reset").addEventListener("click", resetDice);
-
-buildDice();
+// Start with four dice showing 1, each in a random color.
+rollDice();
 </script>
 </body>
 </html>
