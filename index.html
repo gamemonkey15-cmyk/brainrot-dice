@@ -13,62 +13,79 @@
 
     body {
       margin: 0;
-      padding: 25px 16px;
+      padding: 25px 15px 40px;
       font-family: Arial, sans-serif;
       text-align: center;
       background: #8000ff;
       color: white;
       min-height: 100vh;
+      transition: background-color 0.25s;
     }
 
     h1 {
-      margin: 10px 0 25px;
       font-size: 38px;
+      margin: 8px 0 24px;
+      text-shadow: 0 2px 4px #0002;
+    }
+
+    .panel {
+      max-width: 850px;
+      margin: 20px auto;
+      padding: 22px;
+      border-radius: 16px;
+      background: white;
+      color: #222;
+      box-shadow: 0 5px 14px #0002;
+    }
+
+    .panel h2 {
+      margin: 0 0 18px;
+      font-size: 24px;
     }
 
     .settings {
       display: flex;
-      justify-content: center;
-      align-items: center;
       flex-wrap: wrap;
-      gap: 18px;
-      margin-bottom: 25px;
+      justify-content: center;
+      gap: 20px;
     }
 
     .setting {
       display: flex;
       flex-direction: column;
-      gap: 7px;
+      gap: 8px;
       font-weight: bold;
+      align-items: center;
     }
 
     select {
-      padding: 9px 12px;
-      border: none;
-      border-radius: 7px;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: white;
       font-size: 15px;
       cursor: pointer;
     }
 
     #dice-container {
       display: grid;
-      grid-template-columns: repeat(4, minmax(55px, 100px));
+      grid-template-columns: repeat(4, minmax(55px, 90px));
       justify-content: center;
       gap: 15px;
       max-width: 520px;
-      margin: 0 auto 25px;
+      margin: 0 auto 24px;
     }
 
     .die {
-      aspect-ratio: 1;
       width: 100%;
-      background: white;
+      aspect-ratio: 1;
       border-radius: 18%;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 18%;
-      box-shadow: 0 4px 8px #0003;
+      box-shadow: 0 4px 7px #0002;
+      transition: background-color 0.25s;
     }
 
     .pip {
@@ -78,35 +95,51 @@
       border-radius: 50%;
     }
 
-    button {
+    .rolling {
+      background: #b8b8b8 !important;
+      animation: shake 0.12s infinite alternate;
+    }
+
+    .rolling .pip {
+      background: #666;
+    }
+
+    @keyframes shake {
+      from {
+        transform: translate(-3px, -2px) rotate(-5deg);
+      }
+      to {
+        transform: translate(3px, 2px) rotate(5deg);
+      }
+    }
+
+    #roll-button {
+      padding: 13px 32px;
       border: none;
       border-radius: 10px;
-      padding: 13px 30px;
-      background: white;
-      color: #6500cc;
+      background: #8000ff;
+      color: white;
       font-size: 19px;
       font-weight: bold;
       cursor: pointer;
-      margin-bottom: 30px;
+      box-shadow: 0 3px 7px #0002;
+      transition: transform 0.15s, background-color 0.15s;
     }
 
-    button:hover {
-      background: #eeeeee;
-      transform: scale(1.03);
+    #roll-button:hover:not(:disabled) {
+      transform: scale(1.04);
+      background: #6500cc;
     }
 
-    .panel {
-      max-width: 800px;
-      margin: 22px auto;
-      padding: 20px;
-      border-radius: 14px;
-      background: white;
-      color: #222;
-      box-shadow: 0 4px 10px #0002;
+    #roll-button:disabled {
+      opacity: 0.7;
+      cursor: wait;
     }
 
-    .panel h2 {
-      margin-top: 0;
+    #possible-colors {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.7;
     }
 
     #history {
@@ -120,8 +153,9 @@
       justify-content: center;
       flex-wrap: wrap;
       gap: 8px;
-      padding: 10px;
+      padding: 12px;
       background: #f3f3f3;
+      border: 1px solid #e5e5e5;
       border-radius: 10px;
     }
 
@@ -133,80 +167,115 @@
       align-items: center;
       justify-content: center;
       padding: 8px;
+      box-shadow: 0 2px 4px #0002;
     }
 
     .history-die .pip {
       width: 25%;
-      background: #222;
-    }
-
-    #possible-colors {
-      font-size: 18px;
-      line-height: 1.6;
     }
 
     .info-text {
-      line-height: 1.7;
+      margin: 0;
       text-align: left;
+      line-height: 1.7;
+    }
+
+    .empty-history {
+      color: #666;
+      margin: 0;
     }
 
     @media (max-width: 500px) {
+      body {
+        padding: 18px 10px 30px;
+      }
+
       h1 {
-        font-size: 30px;
+        font-size: 31px;
+      }
+
+      .panel {
+        padding: 17px 12px;
+        margin: 15px auto;
       }
 
       #dice-container {
         grid-template-columns: repeat(2, minmax(65px, 90px));
-        gap: 12px;
+        gap: 13px;
       }
 
       .settings {
-        gap: 12px;
+        gap: 15px;
       }
+    }
 
-      .panel {
-        padding: 15px;
+    @media (prefers-reduced-motion: reduce) {
+      .rolling {
+        animation: none;
       }
     }
   </style>
 </head>
 
 <body>
-  <h1>Roll Color Dice</h1>
+  <h1>🎲 Roll Color Dice 🎲</h1>
 
-  <div class="settings">
-    <label class="setting">
-      Number of Dice
-      <select id="dice-count">
-        <script>
-          for (let i = 1; i <= 20; i++) {
-            document.write(`<option value="${i}" ${i === 4 ? "selected" : ""}>${i}</option>`);
-          }
-        </script>
-      </select>
-    </label>
+  <section class="panel">
+    <h2>Dice Settings</h2>
 
-    <label class="setting">
-      Dice Type
-      <select id="dice-type">
-        <option value="colored">Colored Dice</option>
-      </select>
-    </label>
+    <div class="settings">
+      <label class="setting">
+        Number of Dice
+        <select id="dice-count">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4" selected>4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+          <option value="15">15</option>
+          <option value="16">16</option>
+          <option value="17">17</option>
+          <option value="18">18</option>
+          <option value="19">19</option>
+          <option value="20">20</option>
+        </select>
+      </label>
 
-    <label class="setting">
-      Background
-      <select id="background">
-        <option value="#8000ff">Purple</option>
-        <option value="#ff69b4">Pink</option>
-        <option value="#168cff">Blue</option>
-        <option value="#171717">Black</option>
-      </select>
-    </label>
-  </div>
+      <label class="setting">
+        Dice Type
+        <select id="dice-type">
+          <option value="colored">Colored Dice</option>
+        </select>
+      </label>
 
-  <div id="dice-container"></div>
+      <label class="setting">
+        Background
+        <select id="background">
+          <option value="#8000ff">Purple</option>
+          <option value="#ff69b4">Pink</option>
+          <option value="#168cff">Blue</option>
+          <option value="#171717">Black</option>
+        </select>
+      </label>
+    </div>
+  </section>
 
-  <button id="roll-button">Go Again</button>
+  <section class="panel">
+    <h2>Roll Your Dice!</h2>
+
+    <div id="dice-container"></div>
+
+    <button id="roll-button">Go Again</button>
+  </section>
 
   <section class="panel">
     <h2>Possible Colors</h2>
@@ -218,7 +287,9 @@
 
   <section class="panel">
     <h2>Dice History</h2>
-    <div id="history"></div>
+    <div id="history">
+      <p class="empty-history">Roll the dice to start your history!</p>
+    </div>
   </section>
 
   <section class="panel">
@@ -226,17 +297,17 @@
     <p class="info-text">
       These virtual dice randomly choose a color each time you click
       the Go Again button. Each die can land on Red, Orange, Yellow,
-      Green, Blue or Purple. You can choose how many dice to roll
-      and change the background color to customize your experience.
+      Green, Blue or Purple. Choose how many dice to roll and change
+      the background color to customize your experience.
     </p>
   </section>
 
   <section class="panel">
-    <h2>About us</h2>
+    <h2>About Us</h2>
     <p class="info-text">
-      Welcome to Roll Color Dice! This website is a fun and simple
-      way to roll colored dice for games and challenges. Choose your
-      dice, roll them, and use the colors for your next adventure.
+      Welcome to Roll Color Dice! This is a fun and simple way to roll
+      colored dice for games and challenges. Choose your dice, roll
+      them, and use the colors for your next adventure!
     </p>
   </section>
 
@@ -257,10 +328,12 @@
     const rollButton = document.getElementById("roll-button");
 
     let history = [];
+    let isRolling = false;
+    let rollNumber = 0;
 
-    function createDie(color) {
+    function createDie(color, extraClass = "") {
       const die = document.createElement("div");
-      die.className = "die";
+      die.className = "die " + extraClass;
       die.style.backgroundColor = color;
 
       const pip = document.createElement("div");
@@ -271,7 +344,10 @@
     }
 
     function displayDice() {
+      if (isRolling) return;
+
       diceContainer.innerHTML = "";
+
       const count = Number(diceCount.value);
 
       for (let i = 0; i < count; i++) {
@@ -279,27 +355,16 @@
       }
     }
 
-    function rollDice() {
-      const count = Number(diceCount.value);
-      const roll = [];
-
-      for (let i = 0; i < count; i++) {
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        roll.push(color.value);
-      }
-
-      diceContainer.innerHTML = "";
-      roll.forEach(color => {
-        diceContainer.appendChild(createDie(color));
-      });
-
-      history.unshift(roll);
-      history = history.slice(0, 20);
-      displayHistory();
-    }
-
     function displayHistory() {
       historyContainer.innerHTML = "";
+
+      if (history.length === 0) {
+        const message = document.createElement("p");
+        message.className = "empty-history";
+        message.textContent = "Roll the dice to start your history!";
+        historyContainer.appendChild(message);
+        return;
+      }
 
       history.forEach(roll => {
         const row = document.createElement("div");
@@ -321,6 +386,55 @@
       });
     }
 
+    function rollDice() {
+      if (isRolling) return;
+
+      isRolling = true;
+      rollButton.disabled = true;
+      rollButton.textContent = "Rolling...";
+
+      const thisRoll = ++rollNumber;
+      const count = Number(diceCount.value);
+
+      diceContainer.innerHTML = "";
+
+      const dice = [];
+
+      for (let i = 0; i < count; i++) {
+        const die = createDie("#b8b8b8", "rolling");
+        diceContainer.appendChild(die);
+        dice.push(die);
+      }
+
+      // Choose the new colors, but reveal them after the animation.
+      const result = [];
+
+      for (let i = 0; i < count; i++) {
+        const chosen = colors[
+          Math.floor(Math.random() * colors.length)
+        ];
+        result.push(chosen.value);
+      }
+
+      // Keep the gray dice shaking before showing their colors.
+      setTimeout(() => {
+        if (thisRoll !== rollNumber) return;
+
+        dice.forEach((die, index) => {
+          die.classList.remove("rolling");
+          die.style.backgroundColor = result[index];
+        });
+
+        history.unshift(result);
+        history = history.slice(0, 20);
+        displayHistory();
+
+        isRolling = false;
+        rollButton.disabled = false;
+        rollButton.textContent = "Go Again";
+      }, 1100);
+    }
+
     diceCount.addEventListener("change", displayDice);
 
     background.addEventListener("change", () => {
@@ -330,6 +444,7 @@
     rollButton.addEventListener("click", rollDice);
 
     displayDice();
+    displayHistory();
   </script>
 </body>
 </html>
