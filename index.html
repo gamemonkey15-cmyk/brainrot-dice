@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Roll Color Dice</title>
 
-  <!-- Load Luckiest Guy font -->
   <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
 
   <style>
@@ -34,9 +33,12 @@
       font-family: "Luckiest Guy", cursive;
       font-size: 36px;
       font-weight: 400;
+      letter-spacing: 1.5px;
       margin: 8px 0 24px;
       text-transform: uppercase;
-      text-shadow: 2px 3px 0 #4387ff;
+      color: white;
+      text-shadow: 3px 4px 0 #4387ff;
+      -webkit-text-stroke: 0.5px white;
     }
 
     .panel {
@@ -55,17 +57,19 @@
       font-size: 25px;
       font-weight: 900;
       color: white;
-      text-shadow: 2px 3px 0 #4387ff;
+      text-shadow: 3px 4px 0 #4387ff;
     }
 
-    .dice-title {
+    .panel h2.dice-title {
       font-family: "Luckiest Guy", cursive;
       font-size: 30px;
-      letter-spacing: 0.3px;
-      margin: 0 0 14px;
-      text-shadow: 2px 3px 0 #4387ff;
-      text-transform: uppercase;
       font-weight: 400;
+      letter-spacing: 1.5px;
+      margin: 0 0 14px;
+      color: white;
+      text-shadow: 3px 4px 0 #4387ff;
+      text-transform: uppercase;
+      -webkit-text-stroke: 0.4px white;
     }
 
     .settings {
@@ -106,6 +110,7 @@
       font-family: "Luckiest Guy", cursive;
       font-size: 16px;
       font-weight: 400;
+      letter-spacing: 0.4px;
       text-transform: uppercase;
       cursor: pointer;
     }
@@ -351,6 +356,7 @@
 
       h1 {
         font-size: 29px;
+        letter-spacing: 1px;
       }
 
       .panel {
@@ -362,8 +368,9 @@
         font-size: 22px;
       }
 
-      .dice-title {
-        font-size: 29px;
+      .panel h2.dice-title {
+        font-size: 30px;
+        letter-spacing: 1px;
       }
 
       #dice-container {
@@ -448,9 +455,7 @@
     </div>
 
     <div id="dice-container"></div>
-
     <p id="dice-id">ID: ZT9U29APVb</p>
-
     <button id="roll-button">Go Again!</button>
 
     <div class="counter" aria-label="Score counter">
@@ -458,9 +463,7 @@
         <button type="button" data-counter-change="-1" aria-label="Subtract 1">-1</button>
         <button type="button" data-counter-change="-10" aria-label="Subtract 10">-10</button>
       </div>
-
       <div id="counter-value" aria-live="polite">0</div>
-
       <div class="counter-buttons counter-right">
         <button type="button" data-counter-change="1" aria-label="Add 1">+1</button>
         <button type="button" data-counter-change="10" aria-label="Add 10">+10</button>
@@ -484,9 +487,7 @@
   <section class="panel">
     <h2>Dice History</h2>
     <div id="history">
-      <p class="empty-history">
-        Roll the dice to start your history!
-      </p>
+      <p class="empty-history">Roll the dice to start your history!</p>
     </div>
   </section>
 
@@ -535,8 +536,8 @@
 
       const pip = document.createElement("div");
       pip.className = "pip";
-
       die.appendChild(pip);
+
       return die;
     }
 
@@ -602,9 +603,7 @@
       const result = [];
 
       for (let i = 0; i < count; i++) {
-        const color = colors[
-          Math.floor(Math.random() * colors.length)
-        ];
+        const color = colors[Math.floor(Math.random() * colors.length)];
         result.push(color.value);
       }
 
