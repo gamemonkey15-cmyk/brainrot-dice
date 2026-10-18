@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Roll Color Dice</title>
 
+  <!-- Load Luckiest Guy font -->
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+
   <style>
     * {
       box-sizing: border-box;
@@ -28,8 +31,9 @@
     }
 
     h1 {
+      font-family: "Luckiest Guy", cursive;
       font-size: 36px;
-      font-weight: 900;
+      font-weight: 400;
       margin: 8px 0 24px;
       text-transform: uppercase;
       text-shadow: 2px 3px 0 #4387ff;
@@ -51,6 +55,17 @@
       font-size: 25px;
       font-weight: 900;
       color: white;
+      text-shadow: 2px 3px 0 #4387ff;
+    }
+
+    .dice-title {
+      font-family: "Luckiest Guy", cursive;
+      font-size: 30px;
+      letter-spacing: 0.3px;
+      margin: 0 0 14px;
+      text-shadow: 2px 3px 0 #4387ff;
+      text-transform: uppercase;
+      font-weight: 400;
     }
 
     .settings {
@@ -59,6 +74,7 @@
       justify-content: center;
       align-items: center;
       gap: 10px;
+      margin: 0 auto 16px;
     }
 
     .setting {
@@ -87,9 +103,10 @@
       border-radius: 5px;
       background: white;
       color: #4387ff;
-      font-family: inherit;
+      font-family: "Luckiest Guy", cursive;
       font-size: 16px;
-      font-weight: 900;
+      font-weight: 400;
+      text-transform: uppercase;
       cursor: pointer;
     }
 
@@ -345,6 +362,10 @@
         font-size: 22px;
       }
 
+      .dice-title {
+        font-size: 29px;
+      }
+
       #dice-container {
         grid-template-columns: repeat(2, minmax(65px, 90px));
         gap: 13px;
@@ -378,7 +399,7 @@
   <h1>🎲 Roll Color Dice 🎲</h1>
 
   <section class="panel">
-    <h2>Dice Settings</h2>
+    <h2 class="dice-title">ROLL COLOR DICE</h2>
 
     <div class="settings">
       <label class="setting">
@@ -425,10 +446,6 @@
         </select>
       </label>
     </div>
-  </section>
-
-  <section class="panel">
-    <h2>Roll Your Dice!</h2>
 
     <div id="dice-container"></div>
 
@@ -453,7 +470,6 @@
 
   <section class="panel">
     <h2>Possible Colors</h2>
-
     <p id="possible-colors">
       <strong>Possible colors are:</strong>
       <span class="color-red">Red</span>,
@@ -467,7 +483,6 @@
 
   <section class="panel">
     <h2>Dice History</h2>
-
     <div id="history">
       <p class="empty-history">
         Roll the dice to start your history!
@@ -477,7 +492,6 @@
 
   <section class="panel">
     <h2>How do these virtual dice work?</h2>
-
     <p class="info-text">
       These virtual dice randomly choose a color each time you click
       the Go Again! button. Each die can land on Red, Orange, Yellow,
@@ -488,7 +502,6 @@
 
   <section class="panel">
     <h2>About Us</h2>
-
     <p class="info-text">
       Welcome to Roll Color Dice! This is a fun and simple way to roll
       colored dice for games and challenges. Choose your dice, roll
