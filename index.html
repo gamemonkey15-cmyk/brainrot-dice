@@ -37,8 +37,9 @@
       margin: 8px 0 24px;
       text-transform: uppercase;
       color: white;
+      -webkit-text-stroke: 0.8px #4387ff;
+      paint-order: stroke fill;
       text-shadow: 3px 4px 0 #4387ff;
-      -webkit-text-stroke: 0.5px white;
     }
 
     .panel {
@@ -53,10 +54,14 @@
     }
 
     .panel h2 {
+      font-family: "Luckiest Guy", cursive;
       margin: 0 0 18px;
       font-size: 25px;
-      font-weight: 900;
+      font-weight: 400;
       color: white;
+      letter-spacing: 1px;
+      -webkit-text-stroke: 0.6px #4387ff;
+      paint-order: stroke fill;
       text-shadow: 3px 4px 0 #4387ff;
     }
 
@@ -67,9 +72,10 @@
       letter-spacing: 1.5px;
       margin: 0 0 14px;
       color: white;
+      -webkit-text-stroke: 0.8px #4387ff;
+      paint-order: stroke fill;
       text-shadow: 3px 4px 0 #4387ff;
       text-transform: uppercase;
-      -webkit-text-stroke: 0.4px white;
     }
 
     .settings {
@@ -573,8 +579,8 @@
 
           const pip = document.createElement("div");
           pip.className = "pip";
-
           die.appendChild(pip);
+
           row.appendChild(die);
         });
 
